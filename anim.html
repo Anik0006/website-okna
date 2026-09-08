@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Процесс</title>
+<style>
+  :root{
+    --sky-top:#bfe3f7; --sky-bottom:#eef7fb;
+    --mtn-back:#a9c3da; --mtn-front:#87a9c5; --mtn-snow:#f6fafd;
+    --sidewalk:#ccd4d9; --road:#454a52; --road-line:#eef0f1;
+    --wall:#e9eef2; --wall-shade:#d7e0e6; --roof:#33506b; --sign:#2f6fb3;
+    --bush:#6fae5a; --bush-dark:#54903f;
+    --van-body:#2f80ed; --van-body-dark:#2266c2; --van-dark:#233040;
+    --bus-body:#2f8f4e; --bus-dark:#1f6b39; --bus-trim:#eaf6ea;
+    --vest:#ff8c1a; --pants:#2b2f38; --skin:#e6b98d; --cap:#233040;
+    --client-shirt:#4a6fa5; --client-pants:#33404a; --client-skin:#e2b287; --client-hair:#3a2c22;
+    --glass-clean:#cfeaf8; --glass-raw:#d7ddd7; --glass-stroke:#7fa8c9;
+    --tool-yellow:#f2c94c; --tool-dark:#5c636b;
+    --ink:#20303f;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{width:100%;height:100%;overflow:hidden;background:transparent;}
+  .stage{
+    position:relative;width:100%;height:100%;
+    border-radius:16px;overflow:hidden;
+    background:linear-gradient(var(--sky-top),var(--sky-bottom));
+  }
+  .stage svg{display:block;width:100%;height:100%;}
+  .cloud{fill:#ffffff;opacity:.85;}
+  .cloud1{animation:cloudDrift 46s linear infinite;}
+  .cloud2{animation:cloudDrift 62s linear infinite;animation-delay:-20s;}
+  .cloud3{animation:cloudDrift 54s linear infinite;animation-delay:-8s;}
+  @keyframes cloudDrift{from{transform:translateX(-220px);}to{transform:translateX(1820px);}}
+  .sun{animation:sunPulse 5s ease-in-out infinite;transform-origin:1430px 110px;}
+  @keyframes sunPulse{0%,100%{opacity:1;}50%{opacity:.88;}}
+  .caption{
+    position:absolute;left:50%;bottom:14px;transform:translateX(-50%);
+    background:rgba(15,23,32,.62);color:#fff;
+    padding:8px 18px;border-radius:999px;font-size:13px;font-weight:500;
+    white-space:nowrap;opacity:0;transition:opacity .35s ease;
+    font-family:system-ui,sans-serif;pointer-events:none;
+  }
+  .caption.show{opacity:1;}
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+<svg viewBox="0 0 1600 900" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="var(--sky-top)"/><stop offset="1" stop-color="var(--sky-bottom)"/>
+    </linearGradient>
+    <radialGradient id="sunGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fff6d6"/><stop offset="60%" stop-color="#ffd35c"/><stop offset="100%" stop-color="#ffbe3d"/>
+    </radialGradient>
+    <linearGradient id="glassGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f0f9ff"/><stop offset="1" stop-color="var(--glass-clean)"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="1600" height="900" fill="url(#skyGrad)"/>
+  <circle class="sun" cx="1430" cy="110" r="50" fill="url(#sunGrad)"/>
+  <g class="cloud cloud1"><ellipse cx="0" cy="90" rx="46" ry="18"/><ellipse cx="34" cy="80" rx="34" ry="16"/><ellipse cx="-30" cy="84" rx="28" ry="14"/></g>
+  <g class="cloud cloud2"><ellipse cx="0" cy="150" rx="40" ry="15"/><ellipse cx="30" cy="142" rx="26" ry="12"/></g>
+  <g class="cloud cloud3"><ellipse cx="0" cy="200" rx="50" ry="17"/><ellipse cx="-34" cy="196" rx="30" ry="13"/></g>
+  <polygon fill="var(--mtn-back)" opacity=".55" points="0,660 150,480 300,560 480,410 650,540 820,455 1000,560 1180,425 1360,545 1600,470 1600,660 0,660"/>
+  <polygon fill="var(--mtn-front)" opacity=".8" points="0,662 120,540 260,600 420,470 560,590 720,505 900,600 1080,455 1250,585 1420,520 1600,600 1600,662 0,662"/>
+  <rect x="0" y="655" width="1600" height="21" fill="var(--sidewalk)"/>
+  <rect x="0" y="676" width="1600" height="224" fill="var(--road)"/>
+  <line x1="0" y1="676" x2="1600" y2="676" stroke="#9aa3aa" stroke-width="2"/>
+  <line x1="0" y1="784" x2="1600" y2="784" stroke="var(--road-line)" stroke-width="6" stroke-dasharray="42 38" opacity=".55"/>
+  <g><rect x="1503" y="586" width="6" height="90" fill="#7a8790"/><rect x="1474" y="546" width="70" height="44" rx="5" fill="#2f6fb3"/><text x="1509" y="575" font-size="22" font-weight="700" fill="#fff" text-anchor="middle">А</text></g>
+  <g id="workshop">
+    <ellipse cx="215" cy="678" rx="150" ry="10" fill="rgba(20,25,30,.12)"/>
+    <polygon points="66,540 215,492 364,540" fill="var(--roof)"/>
+    <rect x="66" y="540" width="298" height="136" fill="var(--wall)"/>
+    <rect x="66" y="540" width="298" height="10" fill="var(--wall-shade)"/>
+    <rect x="140" y="503" width="150" height="30" rx="5" fill="#fff" stroke="var(--sign)" stroke-width="2"/>
+    <text x="215" y="524" font-size="15" font-weight="700" fill="var(--sign)" text-anchor="middle" letter-spacing="1">АВТОСТЁКЛА</text>
+    <rect x="98" y="578" width="112" height="98" rx="4" fill="var(--van-dark)"/>
+    <line x1="98" y1="598" x2="210" y2="598" stroke="#1a232d" stroke-width="2"/>
+    <line x1="98" y1="618" x2="210" y2="618" stroke="#1a232d" stroke-width="2"/>
+    <line x1="98" y1="638" x2="210" y2="638" stroke="#1a232d" stroke-width="2"/>
+    <line x1="98" y1="658" x2="210" y2="658" stroke="#1a232d" stroke-width="2"/>
+    <rect x="234" y="592" width="56" height="46" fill="url(#glassGrad)" stroke="#607d95" stroke-width="2"/>
+    <ellipse cx="76" cy="670" rx="16" ry="12" fill="var(--bush)"/><ellipse cx="342" cy="670" rx="14" ry="11" fill="var(--bush)"/>
+  </g>
+  <g id="workbench">
+    <rect x="428" y="676" width="10" height="30" fill="#5c3d22"/><rect x="546" y="676" width="10" height="30" fill="#5c3d22"/>
+    <rect x="418" y="666" width="148" height="12" rx="3" fill="#7a5230"/>
+    <g id="dayNight">
+      <line x1="446" y1="522" x2="536" y2="522" stroke="#9aa6ad" stroke-width="3" stroke-linecap="round" opacity=".6"/>
+      <g id="dayIconSlider" style="transform:translateX(0px);">
+        <g id="sunIcon" style="opacity:1;"><circle cx="446" cy="522" r="9" fill="#ffd35c" stroke="#e8a93a" stroke-width="1.5"/></g>
+        <g id="moonIcon" style="opacity:0;"><circle cx="446" cy="522" r="9" fill="#c9d3da"/><circle cx="450" cy="518" r="7" fill="#eef2f4"/></g>
+      </g>
+      <text id="dayLabel" x="491" y="507" font-size="12" text-anchor="middle" fill="var(--ink)" font-weight="600">День 1</text>
+    </g>
+    <rect id="rawGlass" x="440" y="562" width="100" height="80" rx="4" fill="var(--glass-raw)" stroke="var(--glass-stroke)" stroke-width="2" opacity="0"/>
+    <rect id="scoreLine" x="440" y="562" width="100" height="80" rx="4" fill="none" stroke="#fff" stroke-width="2.5" stroke-dasharray="360" stroke-dashoffset="360" opacity=".9"/>
+    <rect id="shineSweep" x="435" y="558" width="14" height="88" fill="#fff" opacity="0" transform="translate(-60px,0px) skewX(-18)"/>
+    <g id="sparks" opacity="0"><circle cx="470" cy="562" r="3" fill="#fff6c9"/><circle cx="500" cy="562" r="2.5" fill="#ffe9a0"/><circle cx="520" cy="562" r="3" fill="#fff6c9"/></g>
+  </g>
+  <g id="bus" transform="translate(1180,680)">
+    <ellipse cx="150" cy="4" rx="162" ry="10" fill="rgba(20,25,30,.2)"/>
+    <rect x="0" y="-140" width="300" height="122" rx="14" fill="var(--bus-body)"/>
+    <rect x="0" y="-140" width="300" height="16" rx="8" fill="var(--bus-trim)" opacity=".9"/>
+    <rect x="15" y="-150" width="85" height="72" rx="6" fill="#1c232b"/>
+    <rect x="108" y="-118" width="34" height="40" rx="3" fill="url(#glassGrad)" stroke="#4f7f95" stroke-width="2"/>
+    <rect x="150" y="-118" width="34" height="40" rx="3" fill="url(#glassGrad)" stroke="#4f7f95" stroke-width="2"/>
+    <rect x="192" y="-118" width="34" height="40" rx="3" fill="url(#glassGrad)" stroke="#4f7f95" stroke-width="2"/>
+    <rect x="240" y="-118" width="46" height="40" rx="3" fill="#bcd7e4" stroke="#4f7f95" stroke-width="2" opacity=".85"/>
+    <rect x="8" y="-18" width="34" height="16" rx="3" fill="#fff" stroke="#333" stroke-width="1.5"/>
+    <text x="25" y="-6" font-size="11" font-weight="700" text-anchor="middle" fill="#222">12</text>
+    <rect x="0" y="-6" width="300" height="6" fill="var(--bus-dark)"/>
+    <circle cx="70" cy="0" r="26" fill="#23303a"/><circle cx="70" cy="0" r="10" fill="#cfd6da"/>
+    <circle cx="232" cy="0" r="26" fill="#23303a"/><circle cx="232" cy="0" r="10" fill="#cfd6da"/>
+    <rect id="stepPlatform" x="18" y="-6" width="48" height="9" rx="2" fill="#8a8f94" opacity="0"/>
+  </g>
+  <g id="oldGlassPane" transform="translate(1195,530)" opacity="1">
+    <rect width="85" height="72" rx="6" fill="url(#glassGrad)" stroke="var(--glass-stroke)" stroke-width="2"/>
+    <path d="M14,10 L42,36 L30,60 M42,36 L68,22" stroke="#7f95a8" stroke-width="1.6" fill="none" opacity=".55"/>
+  </g>
+  <g id="newGlassPane" transform="translate(900,580)" opacity="0">
+    <rect width="85" height="72" rx="6" fill="url(#glassGrad)" stroke="#6fa8cf" stroke-width="2"/>
+    <rect x="8" y="6" width="14" height="60" fill="#fff" opacity=".35" transform="skewX(-14)"/>
+  </g>
+  <rect id="sealantLine" x="1195" y="530" width="85" height="72" rx="6" fill="none" stroke="#ff8c1a" stroke-width="3" stroke-dasharray="314" stroke-dashoffset="314"/>
+  <g id="van" style="transform:translate(130px,680px) scaleX(1);">
+    <ellipse cx="95" cy="4" rx="100" ry="9" fill="rgba(20,20,20,.2)"/>
+    <rect x="5" y="-70" width="115" height="58" rx="10" fill="var(--van-body)"/>
+    <rect x="118" y="-58" width="55" height="46" rx="10" fill="var(--van-body-dark)"/>
+    <rect x="126" y="-52" width="34" height="26" rx="4" fill="url(#glassGrad)" stroke="#5f87a0" stroke-width="2"/>
+    <rect id="rackGlass" x="14" y="-64" width="92" height="44" rx="4" fill="rgba(210,235,250,.65)" stroke="#8fb8d4" stroke-width="2" opacity="0"/>
+    <rect x="5" y="-26" width="168" height="7" fill="#eef3f6" opacity=".85"/>
+    <text x="60" y="-13" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">АВТОСТЁКЛА</text>
+    <g transform="translate(45,-20)"><g id="wheelVanBackRot" style="transform-origin:0px 0px;"><circle r="20" fill="#23303a"/><circle r="8" fill="#cfd6da"/></g></g>
+    <g transform="translate(150,-20)"><g id="wheelVanFrontRot" style="transform-origin:0px 0px;"><circle r="20" fill="#23303a"/><circle r="8" fill="#cfd6da"/></g></g>
+  </g>
+  <g id="tech" style="transform:translate(210px,680px); opacity:0;">
+    <g id="techBody">
+      <ellipse cx="0" cy="2" rx="20" ry="5" fill="rgba(20,20,20,.15)"/>
+      <g transform="translate(-6,-36)"><g id="legBackRot" style="transform-origin:0px 0px;"><rect x="-4" y="0" width="8" height="36" rx="4" fill="var(--pants)"/></g></g>
+      <g transform="translate(6,-36)"><g id="legFrontRot" style="transform-origin:0px 0px;"><rect x="-4" y="0" width="8" height="36" rx="4" fill="var(--pants)"/></g></g>
+      <g transform="translate(-15,-66)"><g id="armBackRot" style="transform-origin:0px 0px;"><rect x="-4" y="0" width="8" height="34" rx="4" fill="var(--vest)"/></g></g>
+      <rect x="-14" y="-70" width="28" height="36" rx="7" fill="var(--vest)"/>
+      <rect x="-14" y="-58" width="28" height="6" fill="#fff" opacity=".85"/>
+      <g transform="translate(15,-66)">
+        <g id="armFrontRot" style="transform-origin:0px 0px;">
+          <rect x="-4" y="0" width="8" height="34" rx="4" fill="var(--vest)"/>
+          <g id="handSlot" transform="translate(0,34)">
+            <g id="toolTape" style="opacity:0;">
+              <rect x="-7" y="-6" width="14" height="10" rx="2" fill="var(--tool-yellow)" stroke="#a67c00" stroke-width="1"/>
+              <rect id="tapeLine" x="-2" y="0" width="4" height="0" fill="#f2f2f2"/>
+              <text x="14" y="4" font-size="9" fill="var(--ink)">1,8 м</text>
+            </g>
+            <g id="toolClipboard" style="opacity:0;">
+              <rect x="-8" y="-16" width="16" height="22" rx="2" fill="#fff" stroke="#8a9096" stroke-width="1.2"/>
+              <path id="clipboardTick" d="M-4,-6 L-1,-2 L5,-9" fill="none" stroke="#2ecc71" stroke-width="2" stroke-dasharray="16" stroke-dashoffset="16"/>
+            </g>
+            <g id="toolSuction" style="opacity:0;">
+              <rect x="-2" y="-18" width="4" height="12" fill="#8a8f94"/>
+              <circle cy="0" r="9" fill="var(--tool-yellow)" stroke="#a67c00" stroke-width="1.6"/>
+              <circle cy="0" r="4" fill="#fff" opacity=".35"/>
+              <circle cx="-14" cy="2" r="7" fill="var(--tool-yellow)" stroke="#a67c00" stroke-width="1.4"/>
+              <circle cx="14" cy="2" r="7" fill="var(--tool-yellow)" stroke="#a67c00" stroke-width="1.4"/>
+            </g>
+            <g id="toolSealant" style="opacity:0;">
+              <rect x="-3" y="-4" width="18" height="8" rx="2" fill="var(--tool-dark)"/>
+              <rect x="14" y="-2" width="8" height="4" fill="#2b2f38"/>
+            </g>
+            <g id="toolCutter" style="opacity:0;">
+              <rect x="-2" y="-8" width="4" height="10" fill="#8a8f94"/>
+              <polygon points="0,2 -4,10 4,10" fill="#3a4750"/>
+            </g>
+            <g id="toolRag" style="opacity:0;">
+              <path d="M-8,-4 L6,-6 L8,6 L-6,8 Z" fill="#d9d2c4" stroke="#b7ad99" stroke-width="1"/>
+            </g>
+          </g>
+        </g>
+      </g>
+      <circle cx="0" cy="-80" r="13" fill="var(--skin)"/>
+      <path d="M-13,-84 A13,13 0 0 1 13,-84 L13,-90 L-13,-90 Z" fill="var(--cap)"/>
+    </g>
+  </g>
+  <g id="client" style="transform:translate(1340px,680px);">
+    <g id="clientBody">
+      <ellipse cx="0" cy="2" rx="20" ry="5" fill="rgba(20,20,20,.15)"/>
+      <path d="M-11,0 L-13,-34 L13,-34 L11,0 Z" fill="var(--client-pants)"/>
+      <rect x="-14" y="-68" width="28" height="34" rx="6" fill="var(--client-shirt)"/>
+      <g transform="translate(12,-64)"><rect x="-4" y="0" width="8" height="32" rx="4" fill="var(--client-shirt)"/></g>
+      <g transform="translate(-13,-64)"><g id="clientArmRot" style="transform-origin:0px 0px;"><rect x="-4" y="0" width="8" height="32" rx="4" fill="var(--client-shirt)"/></g></g>
+      <circle cx="0" cy="-78" r="13" fill="var(--client-skin)"/>
+      <path d="M-13,-80 A13,15 0 0 1 13,-80 L11,-88 L-11,-88 Z" fill="var(--client-hair)"/>
+    </g>
+  </g>
+  <g id="checkmark" transform="translate(1263,600)" style="opacity:0;">
+    <circle r="17" fill="#2ecc71"/>
+    <path d="M-8,0 L-2,7 L9,-8" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>
+<div class="caption" id="caption"></div>
+</div>
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  const wait = ms => new Promise(r => setTimeout(r, ms));
+  const anim = (el, keyframes, opts) => el.animate(keyframes, Object.assign({fill:'forwards', easing:'ease-in-out'}, opts)).finished.catch(()=>{});
+  const ROAD_Y = 680, VAN_WORKSHOP_X = 130, VAN_CLIENT_X = 880;
+  const TECH_DOOR_OFFSET = 80;
+  const TECH_WORKSHOP_X = VAN_WORKSHOP_X + TECH_DOOR_OFFSET;
+  const TECH_CLIENT_EXIT_X = VAN_CLIENT_X + TECH_DOOR_OFFSET;
+  const TECH_BUS_X = 1215, TECH_MEET_X = TECH_BUS_X + 35;
+  const CLIENT_REST_X = 1340, CLIENT_MEET_X = 1270, WORKBENCH_X = 480;
+  const FRAME_X = 1195, FRAME_Y = 530, SCORE_LEN = 360, SEAL_LEN = 314;
+  const captionEl = $('caption');
+  function setCaption(text){
+    captionEl.classList.remove('show');
+    setTimeout(()=>{ captionEl.textContent = text; captionEl.classList.add('show'); }, 220);
+  }
+  function showTool(name){
+    ['toolTape','toolClipboard','toolSuction','toolSealant','toolRag','toolCutter'].forEach(id=>{
+      $(id).style.opacity = (id === name) ? 1 : 0;
+    });
+  }
+  function showCheckmark(){
+    anim($('checkmark'), [
+      {opacity:0, transform:'translate(1263px,600px) scale(0.3)'},
+      {opacity:1, transform:'translate(1263px,600px) scale(1)'}
+    ], {duration:260});
+  }
+  function hideCheckmark(instant){
+    if(instant){ $('checkmark').style.opacity = 0; return; }
+    anim($('checkmark'), [{opacity:0}], {duration:220});
+  }
+  function settleLimbs(){
+    return Promise.all(['legFrontRot','legBackRot','armFrontRot','armBackRot'].map(id =>
+      anim($(id), [{transform:'rotate(0deg)'}], {duration:180})
+    ));
+  }
+  function startWalkCycle(){
+    const dur = 280, iters = 6;
+    const A = [{transform:'rotate(-16deg)'},{transform:'rotate(16deg)'},{transform:'rotate(-16deg)'}];
+    const B = [{transform:'rotate(16deg)'},{transform:'rotate(-16deg)'},{transform:'rotate(16deg)'}];
+    $('legFrontRot').animate(A, {duration:dur, iterations:iters, easing:'ease-in-out'});
+    $('legBackRot').animate(B, {duration:dur, iterations:iters, easing:'ease-in-out'});
+    $('armFrontRot').animate(B, {duration:dur, iterations:iters, easing:'ease-in-out'});
+    $('armBackRot').animate(A, {duration:dur, iterations:iters, easing:'ease-in-out'});
+  }
+  async function walkTech(fromX, toX, duration){
+    startWalkCycle();
+    await anim($('tech'), [
+      {transform:'translate('+fromX+'px,'+ROAD_Y+'px)'},
+      {transform:'translate('+toX+'px,'+ROAD_Y+'px)'}
+    ], {duration});
+    await settleLimbs();
+  }
+  async function driveVan(fromX, toX, duration, flip){
+    const s = flip ? ' scaleX(-1)' : ' scaleX(1)';
+    const rot = flip ? 2200 : -2200;
+    $('wheelVanFrontRot').animate([{transform:'rotate(0deg)'},{transform:'rotate('+rot+'deg)'}], {duration, easing:'linear'});
+    $('wheelVanBackRot').animate([{transform:'rotate(0deg)'},{transform:'rotate('+rot+'deg)'}], {duration, easing:'linear'});
+    await anim($('van'), [
+      {transform:'translate('+fromX+'px,'+ROAD_Y+'px)'+s},
+      {transform:'translate('+toX+'px,'+ROAD_Y+'px)'+s}
+    ], {duration, easing:'ease-in-out'});
+  }
+  async function turnVan(x, toFlip){
+    const from = toFlip ? ' scaleX(1)' : ' scaleX(-1)';
+    const to = toFlip ? ' scaleX(-1)' : ' scaleX(1)';
+    await anim($('van'), [
+      {transform:'translate('+x+'px,'+ROAD_Y+'px)'+from},
+      {transform:'translate('+x+'px,'+ROAD_Y+'px)'+to}
+    ], {duration:260});
+  }
+  async function actDriveToClient(){
+    setCaption('Выезжает на объект к заказчику');
+    await wait(450);
+    await driveVan(VAN_WORKSHOP_X, VAN_CLIENT_X, 3000, false);
+  }
+  async function actMeasure(){
+    setCaption('Замер габаритов стекла на месте');
+    $('tech').style.transform = 'translate('+TECH_CLIENT_EXIT_X+'px,'+ROAD_Y+'px)';
+    $('tech').style.opacity = 1;
+    await walkTech(TECH_CLIENT_EXIT_X, TECH_BUS_X, 900);
+    $('stepPlatform').style.opacity = 1;
+    showTool('toolTape');
+    await anim($('armFrontRot'), [{transform:'rotate(-155deg)'}], {duration:400});
+    $('tapeLine').setAttribute('height','0');
+    await anim($('tapeLine'), [{height:'55'}], {duration:500});
+    await wait(550);
+    await anim($('tapeLine'), [{height:'0'}], {duration:280});
+    await anim($('armFrontRot'), [{transform:'rotate(0deg)'}], {duration:280});
+    showTool('toolClipboard');
+    await wait(250);
+    await anim($('clipboardTick'), [{strokeDashoffset:'0'}], {duration:320});
+    await wait(500);
+    showTool(null);
+  }
+  async function actAgree(){
+    setCaption('Согласовывают заказ и сроки');
+    await Promise.all([
+      anim($('client'), [{transform:'translate('+CLIENT_MEET_X+'px,'+ROAD_Y+'px)'}], {duration:700}),
+      anim($('tech'), [{transform:'translate('+TECH_MEET_X+'px,'+ROAD_Y+'px)'}], {duration:700})
+    ]);
+    await Promise.all([
+      anim($('armFrontRot'), [{transform:'rotate(-100deg)'}], {duration:280}),
+      anim($('clientArmRot'), [{transform:'rotate(100deg)'}], {duration:280})
+    ]);
+    await $('armFrontRot').animate([{transform:'rotate(-100deg)'},{transform:'rotate(-85deg)'},{transform:'rotate(-100deg)'}], {duration:190, iterations:3}).finished.catch(()=>{});
+    showCheckmark(); await wait(850); hideCheckmark();
+    await Promise.all([
+      anim($('armFrontRot'), [{transform:'rotate(0deg)'}], {duration:280}),
+      anim($('clientArmRot'), [{transform:'rotate(0deg)'}], {duration:280})
+    ]);
+  }
+  async function actDriveBack(){
+    setCaption('Едет в мастерскую готовить стекло');
+    await walkTech(TECH_MEET_X, VAN_CLIENT_X + TECH_DOOR_OFFSET, 900);
+    $('tech').style.opacity = 0;
+    await turnVan(VAN_CLIENT_X, true);
+    await driveVan(VAN_CLIENT_X, VAN_WORKSHOP_X, 2900, true);
+  }
+  async function actManufacture(){
+    setCaption('Изготавливают стекло по размеру (1–4 дня)');
+    $('tech').style.transform = 'translate('+TECH_WORKSHOP_X+'px,'+ROAD_Y+'px)';
+    $('tech').style.opacity = 1;
+    await walkTech(TECH_WORKSHOP_X, WORKBENCH_X, 900);
+    await anim($('rawGlass'), [{opacity:1}], {duration:280});
+    showTool('toolCutter');
+    const sparkAnim = $('sparks').animate([{opacity:0},{opacity:1},{opacity:0}], {duration:110, iterations:12});
+    await Promise.all([
+      anim($('scoreLine'), [{strokeDashoffset:'0'}], {duration:1300}),
+      $('armFrontRot').animate([{transform:'rotate(-10deg)'},{transform:'rotate(10deg)'},{transform:'rotate(-10deg)'}], {duration:250, iterations:5}).finished.catch(()=>{})
+    ]);
+    sparkAnim.cancel();
+    showTool(null);
+    await anim($('armFrontRot'), [{transform:'rotate(0deg)'}], {duration:200});
+    await anim($('dayIconSlider'), [{transform:'translateX(0px)'},{transform:'translateX(45px)'}], {duration:500});
+    $('sunIcon').style.opacity = 0; $('moonIcon').style.opacity = 1; $('dayLabel').textContent = 'Ночь';
+    await anim($('rawGlass'), [{opacity:0.55}], {duration:400}); await wait(500);
+    await anim($('dayIconSlider'), [{transform:'translateX(45px)'},{transform:'translateX(90px)'}], {duration:500});
+    $('sunIcon').style.opacity = 1; $('moonIcon').style.opacity = 0; $('dayLabel').textContent = 'День 2';
+    await anim($('rawGlass'), [{opacity:1, fill:'#cfeaf8'}], {duration:500});
+    await anim($('shineSweep'), [
+      {transform:'translate(-60px,0px) skewX(-18deg)', opacity:0},
+      {transform:'translate(20px,0px) skewX(-18deg)', opacity:.85},
+      {transform:'translate(100px,0px) skewX(-18deg)', opacity:0}
+    ], {duration:650});
+    await anim($('armFrontRot'), [{transform:'rotate(-40deg)'}], {duration:240}); await wait(380);
+    await anim($('armFrontRot'), [{transform:'rotate(0deg)'}], {duration:240});
+    await anim($('rawGlass'), [{opacity:0}], {duration:240});
+    await walkTech(WORKBENCH_X, TECH_WORKSHOP_X, 900);
+    $('tech').style.opacity = 0;
+    await anim($('rackGlass'), [{opacity:1}], {duration:280});
+  }
+  async function actDriveToClient2(){
+    setCaption('Везёт готовое стекло заказчику');
+    await turnVan(VAN_WORKSHOP_X, false);
+    await driveVan(VAN_WORKSHOP_X, VAN_CLIENT_X, 2900, false);
+  }
+  async function actInstall(){
+    setCaption('Установка стекла');
+    $('tech').style.transform = 'translate('+TECH_CLIENT_EXIT_X+'px,'+ROAD_Y+'px)';
+    $('tech').style.opacity = 1;
+    await walkTech(TECH_CLIENT_EXIT_X, TECH_BUS_X, 900);
+    $('stepPlatform').style.opacity = 1;
+    showTool('toolSuction');
+    await anim($('armFrontRot'), [{transform:'rotate(-140deg)'}], {duration:380});
+    await anim($('oldGlassPane'), [{transform:'translate('+(FRAME_X-35)+'px,'+(FRAME_Y+95)+'px)', opacity:.7}], {duration:700});
+    await anim($('rackGlass'), [{opacity:0}], {duration:200});
+    $('newGlassPane').style.transform = 'translate('+(VAN_CLIENT_X+20)+'px,580px)';
+    $('newGlassPane').style.opacity = 1;
+    await anim($('newGlassPane'), [{transform:'translate('+FRAME_X+'px,'+FRAME_Y+'px)'}], {duration:900});
+    await anim($('armFrontRot'), [{transform:'rotate(0deg)'}], {duration:260});
+    showTool('toolSealant');
+    await Promise.all([
+      anim($('sealantLine'), [{strokeDashoffset:'0'}], {duration:1200}),
+      $('armFrontRot').animate([{transform:'rotate(-30deg)'},{transform:'rotate(10deg)'},{transform:'rotate(-30deg)'}], {duration:380, iterations:3}).finished.catch(()=>{})
+    ]);
+    await anim($('armFrontRot'), [{transform:'rotate(0deg)'}], {duration:220});
+    showTool('toolRag'); await wait(500); showTool(null);
+    $('stepPlatform').style.opacity = 0;
+  }
+  async function actFinalHandshake(){
+    setCaption('Готово');
+    await Promise.all([
+      anim($('client'), [{transform:'translate('+CLIENT_MEET_X+'px,'+ROAD_Y+'px)'}], {duration:700}),
+      anim($('tech'), [{transform:'translate('+TECH_MEET_X+'px,'+ROAD_Y+'px)'}], {duration:700})
+    ]);
+    await Promise.all([
+      anim($('armFrontRot'), [{transform:'rotate(-100deg)'}], {duration:280}),
+      anim($('clientArmRot'), [{transform:'rotate(100deg)'}], {duration:280})
+    ]);
+    await $('armFrontRot').animate([{transform:'rotate(-100deg)'},{transform:'rotate(-85deg)'},{transform:'rotate(-100deg)'}], {duration:190, iterations:3}).finished.catch(()=>{});
+    showCheckmark(); await wait(1150);
+  }
+  function resetSceneInstant(){
+    hideCheckmark(true);
+    $('client').style.transform = 'translate('+CLIENT_REST_X+'px,'+ROAD_Y+'px)';
+    $('clientArmRot').style.transform = 'rotate(0deg)';
+    $('tech').style.opacity = 0;
+    $('tech').style.transform = 'translate('+TECH_WORKSHOP_X+'px,'+ROAD_Y+'px)';
+    ['legFrontRot','legBackRot','armFrontRot','armBackRot'].forEach(id => { $(id).style.transform = 'rotate(0deg)'; });
+    showTool(null);
+    $('stepPlatform').style.opacity = 0;
+    $('van').style.transform = 'translate('+VAN_WORKSHOP_X+'px,'+ROAD_Y+'px) scaleX(1)';
+    $('rackGlass').style.opacity = 0;
+    $('rawGlass').style.opacity = 0; $('rawGlass').style.fill = 'var(--glass-raw)';
+    $('scoreLine').style.strokeDashoffset = SCORE_LEN;
+    $('shineSweep').style.opacity = 0;
+    $('dayIconSlider').style.transform = 'translateX(0px)';
+    $('sunIcon').style.opacity = 1; $('moonIcon').style.opacity = 0; $('dayLabel').textContent = 'День 1';
+    $('oldGlassPane').style.opacity = 1; $('oldGlassPane').style.transform = 'translate('+FRAME_X+'px,'+FRAME_Y+'px)';
+    $('newGlassPane').style.opacity = 0;
+    $('sealantLine').style.strokeDashoffset = SEAL_LEN;
+    $('tapeLine').setAttribute('height','0');
+    $('clipboardTick').style.strokeDashoffset = 16;
+  }
+  async function loopFade(){
+    await anim($('stage'), [{opacity:0}], {duration:420});
+    resetSceneInstant();
+    await anim($('stage'), [{opacity:1}], {duration:520});
+  }
+  async function runLoop(){
+    resetSceneInstant();
+    $('techBody').animate([{transform:'translateY(0px)'},{transform:'translateY(-4px)'},{transform:'translateY(0px)'}], {duration:900, iterations:Infinity, easing:'ease-in-out'});
+    $('clientBody').animate([{transform:'translateY(0px)'},{transform:'translateY(-3px)'},{transform:'translateY(0px)'}], {duration:1100, iterations:Infinity, easing:'ease-in-out'});
+    while(true){
+      await actDriveToClient();
+      await actMeasure();
+      await actAgree();
+      await actDriveBack();
+      await actManufacture();
+      await actDriveToClient2();
+      await actInstall();
+      await actFinalHandshake();
+      await loopFade();
+    }
+  }
+  if (window.Element && Element.prototype.animate) {
+    try { runLoop(); } catch(e) {}
+  }
+})();
+</script>
+</body>
+</html>
